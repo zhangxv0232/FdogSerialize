@@ -1,4 +1,5 @@
 #include "fdogserialize.h"
+using namespace Fdog;
 
 FdogSerializeBase * FdogSerializeBase::fdogserializebase = nullptr;
 mutex * FdogSerializeBase::mutex_base = new(mutex);

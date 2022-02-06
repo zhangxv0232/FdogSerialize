@@ -18,6 +18,8 @@
 
 using namespace std;
 
+namespace Fdog{
+
 static vector<string> baseType = {
         "bool", "bool*"
         "char", "unsigned char", "char*", "unsigned char*",
@@ -524,6 +526,7 @@ class FdogSerialize {
     void FDesSerialize(T & object_, string & json_, string name = ""){
         DesSerialize(object_, json_, name);
     }
+
     //用于数组，vector，list，set
     template<typename T>
     void FDesSerializeA(T & object_, string & json_, string name = ""){
@@ -551,6 +554,7 @@ class FdogSerialize {
             i++;
         }
     }
+
     //用于map
     template<typename T>
     void FDesSerializeM(T & object_, string & json_){
@@ -569,6 +573,51 @@ class FdogSerialize {
         }
     }
 };
+
+template<typename T>
+void FSerialize(string & json_, T & object_, string name = ""){
+    FdogSerialize::Instance()->FSerialize(json_, object_, name);
+}
+
+template<typename T>
+void FSerializeA(string & json_, T & object_, string name = ""){
+    FdogSerialize::Instance()->FSerializeA(json_, object_, name);
+}
+
+template<typename T>
+void FSerializeM(string & json_, T & object_, string name = ""){
+    FdogSerialize::Instance()->FSerializeM(json_, object_, name);
+}
+
+template<typename T>
+void FDesSerialize(T & object_, string & json_, string name = ""){
+    FdogSerialize::Instance()->FDesSerialize(object_, json_, name);
+}
+
+template<typename T>
+void FDesSerializeA(T & object_, string & json_, string name = ""){
+    FdogSerialize::Instance()->FDesSerializeA(object_, json_, name);
+}
+
+template<typename T>
+void FDesSerializeM(T & object_, string & json_, string name = ""){
+    FdogSerialize::Instance()->FDesSerializeM(object_, json_, name);
+}
+
+//设置别名
+void setAliasName(string Type, string memberName, string AliasName){
+    FdogSerialize::Instance()->setAliasName(Type, memberName, AliasName);
+}
+
+//设置是否忽略该字段序列化
+void setIgnoreField(string Type, string memberName){
+    FdogSerialize::Instance()->setIgnoreField(Type, memberName);
+}
+
+//设置是否忽略大小写
+void setIgnoreLU(string Type, string memberName){
+    FdogSerialize::Instance()->setIgnoreLU(Type, memberName);
+}
 
 #define NAME(x) #x
 
@@ -671,5 +720,7 @@ REGISTEREDMEMBER_s(TYPE, metaInfoObjectList, arg1);
         metainfo_one->memberIsIgnoreLU = false;\
         metaInfoObjectList.push_back(metainfo_one);\
     }while(0);
+
+}
 
 #endif
